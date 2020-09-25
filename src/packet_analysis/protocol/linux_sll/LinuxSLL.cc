@@ -24,6 +24,7 @@ bool LinuxSLLAnalyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* pa
 
 	uint32_t protocol = ntohs(hdr->protocol_type);
 	packet->l2_src = (u_char*) &(hdr->addr);
+	packet->hdr_size += len_sll_hdr;
 
 	// SLL doesn't include a destination address in the header, but not setting l2_dst to something
 	// here will cause crashes elsewhere.

@@ -31,6 +31,7 @@ bool NFLogAnalyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* packe
 	// Skip to TLVs.
 	data += 4;
 	len -= 4;
+	packet->hdr_size += 4;
 
 	uint16_t tlv_len;
 	uint16_t tlv_type;
@@ -56,6 +57,7 @@ bool NFLogAnalyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* packe
 			// The raw packet payload follows this TLV.
 			data += 4;
 			len -= 4;
+			packet->hdr_size += 4;
 			break;
 			}
 		else
@@ -80,6 +82,7 @@ bool NFLogAnalyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* packe
 
 			data += tlv_len;
 			len -= tlv_len;
+			packet->hdr_size += tlv_len;
 			}
 		}
 

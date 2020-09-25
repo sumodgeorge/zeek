@@ -12,7 +12,9 @@ PPPSerialAnalyzer::PPPSerialAnalyzer()
 
 bool PPPSerialAnalyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* packet)
 	{
-	if ( 4 >= len )
+	int hdr_size = 4;
+
+	if ( hdr_size >= len )
 		{
 		packet->Weird("truncated_ppp_serial_header");
 		return false;
@@ -20,6 +22,8 @@ bool PPPSerialAnalyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* p
 
 	// Extract protocol identifier
 	uint32_t protocol = (data[2] << 8) + data[3];
+
 	// skip link header
-	return ForwardPacket(len - 4, data + 4, packet, protocol);
+	packet->hdr_size += hdr_size;
+	return ForwardPacket(len - hdr_size, data + hdr_size, packet, protocol);
 	}

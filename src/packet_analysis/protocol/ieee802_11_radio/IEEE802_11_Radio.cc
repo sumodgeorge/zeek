@@ -29,5 +29,7 @@ bool IEEE802_11_RadioAnalyzer::AnalyzePacket(size_t len, const uint8_t* data, Pa
 		return false;
 		}
 
+	packet->hdr_size += rtheader_len;
+
 	return ForwardPacket(len - rtheader_len, data + rtheader_len, packet, DLT_IEEE802_11);
 	}

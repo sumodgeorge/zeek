@@ -12,7 +12,9 @@ VLANAnalyzer::VLANAnalyzer()
 
 bool VLANAnalyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* packet)
 	{
-	if ( 4 >= len )
+	int hdr_size = 4;
+
+	if ( hdr_size >= len )
 		{
 		packet->Weird("truncated_VLAN_header");
 		return false;
@@ -23,6 +25,8 @@ bool VLANAnalyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* packet
 
 	uint32_t protocol = ((data[2] << 8u) + data[3]);
 	packet->eth_type = protocol;
+	packet->hdr_size += hdr_size;
+
 	// Skip the VLAN header
-	return ForwardPacket(len - 4, data + 4, packet, protocol);
+	return ForwardPacket(len - hdr_size, data + hdr_size, packet, protocol);
 	}

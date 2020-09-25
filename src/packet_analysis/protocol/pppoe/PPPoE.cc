@@ -12,7 +12,9 @@ PPPoEAnalyzer::PPPoEAnalyzer()
 
 bool PPPoEAnalyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* packet)
 	{
-	if ( 8 >= len )
+	int hdr_size = 8;
+
+	if ( hdr_size >= len )
 		{
 		packet->Weird("truncated_pppoe_header");
 		return false;
@@ -20,6 +22,8 @@ bool PPPoEAnalyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* packe
 
 	// Extract protocol identifier
 	uint32_t protocol = (data[6] << 8u) + data[7];
+
 	// Skip the PPPoE session and PPP header
-	return ForwardPacket(len - 8, data + 8, packet, protocol);
+	packet->hdr_size += hdr_size;
+	return ForwardPacket(len - hdr_size, data + hdr_size, packet, protocol);
 	}

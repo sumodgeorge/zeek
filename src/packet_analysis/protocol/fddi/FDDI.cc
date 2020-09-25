@@ -20,6 +20,8 @@ bool FDDIAnalyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* packet
 		return false;
 		}
 
+	packet->hdr_size += hdr_size;
+
 	// We just skip the header and hope for default analysis
 	return ForwardPacket(len - hdr_size, data + hdr_size, packet);
 	}

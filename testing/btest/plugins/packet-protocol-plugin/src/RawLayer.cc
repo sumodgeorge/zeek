@@ -20,6 +20,7 @@ bool RawLayer::AnalyzePacket(size_t len, const uint8_t* data, Packet* packet)
 		}
 
 	uint16_t protocol = ntohs(*((const uint16_t*)(data + layer_size -2)));
+	packet->hdr_size += layer_size;
 
 	event_mgr.Enqueue(raw_layer_message,
 		make_intrusive<StringVal>(layer_size, reinterpret_cast<const char*>(data)),

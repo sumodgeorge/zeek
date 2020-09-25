@@ -12,8 +12,10 @@ IPv4Analyzer::IPv4Analyzer()
 bool IPv4Analyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* packet)
 	{
 	packet->l3_proto = L3_IPV4;
-	packet->hdr_size = static_cast<uint32_t>(data - packet->data);
 	packet->session_analysis = true;
+
+	// Session analysis doesn't expect the IP analyzer to have added it's header size to
+	// the packet's header size, so we don't advance that value in this analyzer.
 
 	// Leave packet analyzer land
 	return true;

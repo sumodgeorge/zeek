@@ -106,6 +106,7 @@ bool IEEE802_11Analyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* 
 
 	uint32_t protocol = (data[0] << 8) + data[1];
 	data += 2;
+	packet->hdr_size += len_80211;
 
 	return ForwardPacket(len - len_80211, data, packet, protocol);
 	}

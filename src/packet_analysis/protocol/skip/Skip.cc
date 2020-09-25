@@ -23,5 +23,6 @@ void SkipAnalyzer::Initialize()
 
 bool SkipAnalyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* packet)
 	{
+	packet->hdr_size += skip_bytes;
 	return ForwardPacket(len - skip_bytes, data + skip_bytes, packet);
 	}

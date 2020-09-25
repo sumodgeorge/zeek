@@ -43,6 +43,7 @@ bool EthernetAnalyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* pa
 
 		data += cfplen;
 		len -= cfplen;
+		packet->hdr_size += cfplen;
 		}
 
 	// Get protocol being carried from the ethernet frame.
@@ -54,7 +55,10 @@ bool EthernetAnalyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* pa
 
 	// Ethernet II frames
 	if ( protocol >= 1536 )
+		{
+		packet->hdr_size += 14;
 		return ForwardPacket(len - 14, data + 14, packet, protocol);
+		}
 
 	// Other ethernet frame types
 	if ( protocol <= 1500 )
